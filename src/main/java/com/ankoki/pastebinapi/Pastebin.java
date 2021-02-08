@@ -9,7 +9,7 @@ public class Pastebin {
         this.key = key;
     }
 
-    public String getPaste(String key) {
+    public String getPaste() {
         Response<String> response = HTTPUtils.readPaste(key);
         if (response.hasError()) return response.getError();
         return response.get();
