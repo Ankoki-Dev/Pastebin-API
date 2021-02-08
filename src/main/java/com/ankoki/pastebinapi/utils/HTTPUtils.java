@@ -4,7 +4,9 @@ import com.ankoki.pastebinapi.api.Paste;
 import com.ankoki.pastebinapi.exceptions.EmptyPasteCodeException;
 import com.ankoki.pastebinapi.exceptions.NoDeveloperKeyException;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -49,6 +51,23 @@ public final class HTTPUtils {
             }
             http.getInputStream();
             return new PasteResponse(Optional.of(http.getInputStream()));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new PasteResponse(Optional.empty());
+    }
+
+    public static Response<String> readPaste(String key) {
+        try {
+            HttpURLConnection http = (HttpURLConnection) new URL("https://pastebin.com/raw/" + key).openConnection();
+            http.connect();
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(http.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            for (String line; (line = inputReader.readLine()) != null;) {
+                response.append(line);
+                response.append('\n');
+            }
+            return new PasteResponse(response.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -18,6 +18,10 @@ public class PasteResponse implements Response<String> {
         }
     }
 
+    public PasteResponse(String input) {
+        this.input = input;
+    }
+
     @Override
     public String get() {
         return input;
