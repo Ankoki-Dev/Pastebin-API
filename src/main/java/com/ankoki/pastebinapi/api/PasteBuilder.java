@@ -6,8 +6,6 @@ import com.ankoki.pastebinapi.utils.HTTPUtils;
 import com.ankoki.pastebinapi.utils.PasteResponse;
 import com.ankoki.pastebinapi.utils.Response;
 
-import java.util.Optional;
-
 public class PasteBuilder implements Paste {
     private String title = "New Paste";
     private String rawText = "<none>";
@@ -44,9 +42,8 @@ public class PasteBuilder implements Paste {
         try {
             return HTTPUtils.sendPaste(this);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            return new PasteResponse(ex.getMessage(), true);
         }
-        return new PasteResponse(Optional.empty());
     }
 
     @Override
