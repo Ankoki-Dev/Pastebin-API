@@ -5,7 +5,6 @@ import com.ankoki.pastebinapi.exceptions.EmptyPasteCodeException;
 import com.ankoki.pastebinapi.exceptions.NoDeveloperKeyException;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -52,9 +51,8 @@ public final class HTTPUtils {
             http.getInputStream();
             return new PasteResponse(Optional.of(http.getInputStream()));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            return new PasteResponse(ex.getMessage(), true);
         }
-        return new PasteResponse(Optional.empty());
     }
 
     public static Response<String> readPaste(String key) {
@@ -69,8 +67,7 @@ public final class HTTPUtils {
             }
             return new PasteResponse(response.toString());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            return new PasteResponse(ex.getMessage(), true);
         }
-        return new PasteResponse(Optional.empty());
     }
 }

@@ -6,12 +6,11 @@ import com.ankoki.pastebinapi.utils.HTTPUtils;
 import com.ankoki.pastebinapi.utils.PasteResponse;
 import com.ankoki.pastebinapi.utils.Response;
 
-import java.io.InputStream;
 import java.util.Optional;
 
 public class PasteBuilder implements Paste {
     private String title = "New Paste";
-    private String rawText = "";
+    private String rawText = "<none>";
     private PasteVisibility visibility = PasteVisibility.PUBLIC;
     private PasteExpiry expiry = PasteExpiry.NEVER;
     private String format = "";

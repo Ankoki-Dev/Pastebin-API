@@ -9,17 +9,24 @@ import java.util.stream.Collectors;
 
 public class PasteResponse implements Response<String> {
 
-    private final String input;
+    private String input = "<none>";
+    private String stackTrace = "<none>";
+    private boolean error;
     public PasteResponse(Optional<InputStream> optional) {
-        if (optional.isPresent()) {
-            input = readInputStream(optional.get());
-        } else {
-            input = "NOT PRESENT";
-        }
+        optional.ifPresent(inputStream -> input = readInputStream(inputStream));
     }
 
     public PasteResponse(String input) {
         this.input = input;
+    }
+
+    public PasteResponse(String stackTrace, boolean error) {
+        if (stackTrace.startsWith("Server returned HTTP response code: 403 for URL:")) {
+            this.stackTrace = "You attempted to access a private paste!";
+        } else {
+            this.stackTrace = stackTrace;
+        }
+        this.error = error;
     }
 
     @Override
@@ -29,12 +36,12 @@ public class PasteResponse implements Response<String> {
 
     @Override
     public boolean hasError() {
-        return input.startsWith("Bad API request");
+        return error || input.startsWith("Bad API request");
     }
 
     @Override
     public String getError() {
-        return input;
+        return stackTrace;
     }
 
     private String readInputStream(InputStream stream) {

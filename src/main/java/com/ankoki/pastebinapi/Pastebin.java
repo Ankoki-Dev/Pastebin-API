@@ -5,13 +5,14 @@ import com.ankoki.pastebinapi.utils.Response;
 
 public class Pastebin {
     private final String key;
+    private Response<String> paste = null;
     public Pastebin(String key) {
         this.key = key;
     }
 
-    public String getPaste() {
-        Response<String> response = HTTPUtils.readPaste(key);
-        if (response.hasError()) return response.getError();
-        return response.get();
+    public Response<String> getPaste() {
+        if (paste == null) {
+            paste = HTTPUtils.readPaste(key);
+        } return paste;
     }
 }
